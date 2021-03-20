@@ -11,6 +11,73 @@ The purpose of this analysis was to provide Steve with a tool to help him advise
 
 ### Macro Performance
 - Refactoring the code reduced the run time from .28 to .08 seconds which is around a 71% decrease. This perfomance boost came form utilizing arrays which allowed the macro to run through the 3000 rows one time and save all the information to the corresponding arrays -- whereas the original macro looped through the 3000 rows 12 times.<br>
+#### Original Code with Nested For Loops
+ 
+    '4. Loop through the tickers.
+    For i = 0 To 11
+        ticker = tickers(i)
+        totalVolume = 0
+    
+    '5a. Find the total volume for the current ticker.
+    
+    Worksheets("2018").Activate
+
+        For j = rowStart To lastRow
+        
+            If Cells(j, 1).Value = ticker Then
+            
+                totalVolume = totalVolume + Cells(j, 8).Value
+                
+            End If
+            ...
+            
+        Next j
+    ...
+    Next i`
+
+#### Refactored Code with Arrays
+    `'Initialize array of all tickers
+      Dim tickers(12) As String
+      ...
+
+    '1a) Create a ticker Index and set to zero
+    Dim tickerIndex As Integer
+    tickerIndex = 0
+
+    '1b) Create three output arrays for volume, starting, and ending prices
+    Dim tickerVolumes(12) As Long
+    Dim tickerStartingPrices(12) As Single
+    Dim tickerEndingPrices(12) As Single
+    ...
+  
+    '2b) Loop over all the rows in the spreadsheet.
+        For i = 2 To RowCount
+    
+        '3a) Increase volume for current ticker
+            If Cells(i, 1).Value = tickers(tickerIndex) Then
+                tickerVolumes(tickerIndex) = tickerVolumes(tickerIndex) + Cells(i, 8).Value
+                
+            End If
+        
+        '3b) Check if the current row is the first row with the selected tickerIndex. If yes, set starting price.
+        If Cells(i, 1).Value = tickers(tickerIndex) And Cells(i - 1, 1) <> tickers(tickerIndex) Then
+            tickerStartingPrices(tickerIndex) = Cells(i, 6).Value
+              
+        End If
+        
+        '3c) check if the current row is the last row with the selected ticker. If yes, set ending price.
+         'If the next row’s ticker doesn’t match, increase the tickerIndex.
+        If Cells(i, 1).Value = tickers(tickerIndex) And Cells(i + 1, 1) <> tickers(tickerIndex) Then
+            tickerEndingPrices(tickerIndex) = Cells(i, 6).Value
+            
+            '3d Increase the tickerIndex.
+            tickerIndex = tickerIndex + 1
+            
+        End If
+    
+    Next i`
+* **Code shortened with "..." to show for loops**
+
 #### 2017 Original and Refactored Macro Run Time
 ![2017 Original and Refactored Macro Run Time](Resources/Runtimes.png)
 
