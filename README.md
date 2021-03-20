@@ -6,9 +6,9 @@ The purpose of this analysis was to provide Steve with a tool to help him advise
 ## Results
 ### Stock Performance
 - Based on the 2017-2018 daily volume and returns, Steve should recommend his parents invest in ENPH and RUN stocks. Of the 12 stock analyzed, these two had positive returns both years and were the top two for daily volume in 2018. Since both of these stocks are peforming well, Steve should recommend investing in both stocks to diversify their portfolio. The market appears to be volatile given that of the 12 stocks, 9 or 75% went from postive returns to negative.<br>
-![2017 Stock Performance](Resources/All_Stocks_2017.png =10x)
+![2017 Stock Performance](Resources/All_Stocks_2017.png)
 
-![2018 Stock Performance](Resources/All_Stocks_2018.png =10x)
+![2018 Stock Performance](Resources/All_Stocks_2018.png)
 
 ### Macro Performance
 - Refactoring the code reduced the run time from .28 to .08 seconds which is around a 71% decrease. This perfomance boost came form utilizing arrays which allowed the macro to run through the 3000 rows one time and save all the information to the corresponding arrays -- whereas the original macro looped through the 3000 rows 12 times.<br>
